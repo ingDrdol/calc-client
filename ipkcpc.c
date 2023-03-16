@@ -22,6 +22,10 @@
 #define ARG_NUM 6
 #define WELL_KNOWN_PORTS 1023 //number of well known ports
 #define MAX_PORT_NUM 65353 //max port number for tcp/udp protocols
+#define BUFF_SIZE 256
+#define REQ_OFFSET 2 //pocet informacnich bajtu zpravy
+#define REQ_OPCODE 0 //opcode pro request
+#define REC_OFFSET 3 //pocet informacnich bajtu odpovedi
 
 extern int optopt, opterr, optind;
 extern char *optarg;
@@ -30,8 +34,55 @@ void print_help(){
   printf("help is being printed\n");
 }
 
+void send_udp(struct sockaddr_in address, int csocket, socklen_t socklen){
+    char buffer[BUFF_SIZE];
+    int recv_len = socklen, status, opcode;
+
+    bzero(buffer, BUFF_SIZE);
+
+    fgets(buffer + REQ_OFFSET, BUFF_SIZE - REQ_OFFSET, stdin);
+
+    buffer[0] = REQ_OPCODE;
+    buffer[1] = strlen(buffer + REQ_OFFSET);
+
+    int chars = sendto(csocket, buffer, strlen(buffer), 0, (struct sockaddr *)&address, socklen);
+    if(chars < 0){
+      fprintf(stderr, "ERROR: unable to send reguest '%s'\n", buffer);
+      exit(1);
+    }
+
+    chars = recvfrom(csocket, buffer, strlen(buffer), 0, (struct sockaddr *)&address, &recv_len);
+    if(chars < 0){
+      fprintf(stderr, "ERROR: response not given or lost\n");
+      exit(1);
+    }
+
+    if(recv_len > socklen){
+      fprintf(stderr, "Warning: response may not be whole\n");
+    }
+
+    opcode = (int)buffer[0];
+    status = (int)buffer[1];
+    recv_len = (int)buffer[2];
+
+    if(opcode != 1){
+      fprintf(stderr, "ERROR: unexpected opcode '%d'\n", opcode);
+    }
+    else if(status == 0){
+      printf("OK:%s", buffer[REC_OFFSET]);
+    }
+    elseif(status == 1){
+      printf("ERR:%s", buffer[REC_OFFSET]);
+    }
+    else{
+      fprintf(stderr, "ERROR: unexpected status\n");
+    }
+
+}
+
+
 int main(int argc, char** argv){
-    int c, port_num, mode;
+    int c, port_num = 0, mode = -1, csocket;
     char *host_name = NULL;
     struct hostent *ipk_server;
     struct sockaddr_in server_addr;
@@ -121,13 +172,21 @@ int main(int argc, char** argv){
     server_addr.sin_port = htons(port_num);
 /////////////////////////////^^nastaveni cisla potru a IP adresy hosta^^////////////////////////////////////    
     
-    /* tiskne informace o vzdalenem soketu */ 
+    /* tiskne informace o vzdalenem soketu 
     printf("INFO: Server socket: %s : %d \n", inet_ntoa(server_addr.sin_addr), ntohs(server_addr.sin_port));
+    */
+	if ((csocket = socket(AF_INET, SOCK_DGRAM, 0)) <= 0){
+		fprintf(stderr, "ERROR: socket not created\n");
+    free(host_name);
+    exit(1);
+	}
+
+
     if(mode)
       printf("tcp\n");
     else
-      printf("udp\n");
-    if(host_name != NULL)
-      free(host_name);
+      send_udp(server_addr, socket, sizeof(server_addr));
+    
+    free(host_name);
     return 0;
 }
