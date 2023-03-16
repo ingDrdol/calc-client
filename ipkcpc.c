@@ -36,7 +36,8 @@ void print_help(){
 
 void send_udp(struct sockaddr_in address, int csocket, socklen_t socklen){
     char buffer[BUFF_SIZE];
-    int recv_len = socklen, status, opcode;
+    socklen_t recv_len = socklen;
+    int status, opcode;
 
     bzero(buffer, BUFF_SIZE);
 
@@ -69,10 +70,10 @@ void send_udp(struct sockaddr_in address, int csocket, socklen_t socklen){
       fprintf(stderr, "ERROR: unexpected opcode '%d'\n", opcode);
     }
     else if(status == 0){
-      printf("OK:%s", buffer[REC_OFFSET]);
+      printf("OK:%s", buffer + REC_OFFSET);
     }
-    elseif(status == 1){
-      printf("ERR:%s", buffer[REC_OFFSET]);
+    else if(status == 1){
+      printf("ERR:%s", buffer + REC_OFFSET);
     }
     else{
       fprintf(stderr, "ERROR: unexpected status\n");
@@ -185,7 +186,7 @@ int main(int argc, char** argv){
     if(mode)
       printf("tcp\n");
     else
-      send_udp(server_addr, socket, sizeof(server_addr));
+      send_udp(server_addr, csocket, sizeof(server_addr));
     
     free(host_name);
     return 0;
