@@ -1,9 +1,12 @@
 CC=gcc
 CFLAGS=-std=c99 -Wall -Wextra -pedantic -lm -fcommon
-.PHONY=run clean valgrind
+.PHONY=runudp runtcp clean valgrind
 
-run: ipkcpc.out
-	./ipkcpc.out -p 2023 -m udp -h localhost < input
+runudp: ipkcpc.out
+	./ipkcpc.out -p 2023 -m udp -h localhost < inputudp
+
+runtcp: ipkcpc.out
+	./ipkcpc.out -p 2023 -m tcp -h localhost
 
 valgrind: ipkcpc.out
 	valgrind ./ipkcpc.out -p 2023 -m udp -h localhost

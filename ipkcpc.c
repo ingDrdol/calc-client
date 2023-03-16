@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <getopt.h>
 #include <ctype.h>
+#include <signal.h>
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <arpa/inet.h>
@@ -30,6 +31,7 @@
 
 extern int optopt, opterr, optind;
 extern char *optarg;
+int csocket;
 
 void print_help(){
   printf("help is being printed\n");
@@ -38,18 +40,18 @@ void print_help(){
 void send_udp(struct sockaddr_in address, int csocket, socklen_t socklen){
     char buffer[BUFF_SIZE];
     socklen_t recv_len = socklen;
-    int status, opcode;
+    int status, opcode, chars;
 
     bzero(buffer, BUFF_SIZE);
 
-    while(fgets(buffer + REQ_OFFSET, BUFF_SIZE - REQ_OFFSET, stdin) != 0){
+    while(fgets(buffer + REQ_OFFSET, BUFF_SIZE - REQ_OFFSET, stdin)){
 
       recv_len = socklen;
 
       buffer[1] = strlen(buffer + REQ_OFFSET);
       buffer[0] = REQ_OPCODE;
       
-      int chars = sendto(csocket, buffer, strlen(buffer + REQ_OFFSET) + REQ_OFFSET, 0, (struct sockaddr *)&address, socklen);
+      chars = sendto(csocket, buffer, strlen(buffer + REQ_OFFSET) + REQ_OFFSET, 0, (struct sockaddr *)&address, socklen);
       if(chars < 0){
         fprintf(stderr, "ERROR: unable to send reguest '%s'\n", buffer);
         exit(1);
@@ -77,7 +79,7 @@ void send_udp(struct sockaddr_in address, int csocket, socklen_t socklen){
         printf("OK:%s\n", buffer + REC_OFFSET);
       }
       else if(status == 1){
-        printf("ERR:%s\n", buffer + REC_OFFSET);
+        printf("ERR:%s", buffer + REC_OFFSET);
       }
       else{
         fprintf(stderr, "ERROR: unexpected status\n");
@@ -88,9 +90,46 @@ void send_udp(struct sockaddr_in address, int csocket, socklen_t socklen){
 
 }
 
+void handle_sigint(int sig){
+    fprintf(stderr, "Caught sigint, teminating connection\n");
+    close(csocket);
+    exit(2);
+}
+
+void send_tcp(struct sockaddr_in address, int csocket){
+
+    char buffer[BUFF_SIZE];
+    int chars;
+
+    if(connect(csocket, (const struct sockaddr*) &address, sizeof(address))){
+      fprintf(stderr, "ERROR: could not connect to server\n");
+      exit(1);
+    }
+
+    bzero(buffer, BUFF_SIZE);
+    while(fgets(buffer, BUFF_SIZE, stdin)){
+      chars = send(csocket, buffer, strlen(buffer), 0);
+      if(chars < 0){
+        fprintf(stderr, "ERROR: could not send command %s\n", buffer);
+      }
+
+      chars = recv(csocket, buffer, BUFF_SIZE, 0);
+      buffer[chars] = '\0';
+      if(chars < 0)
+        fprintf(stderr, "ERROR: didn't recive response\n");
+      else
+        printf("%s", buffer);
+      
+      if(strcmp(buffer, "BYE\n") == 0)
+        break;
+    }
+
+    close(csocket);
+
+}
 
 int main(int argc, char** argv){
-    int c, port_num = 0, mode = -1, csocket;
+    int c, port_num = 0, mode = -1, sock_type = SOCK_DGRAM;
     char host_name[MAX_HOST_NAME_LEN];
     struct hostent *ipk_server;
     struct sockaddr_in server_addr;
@@ -119,10 +158,15 @@ int main(int argc, char** argv){
         ////////////////////////////////^^kontrola cisla portu^^///////////////////////////////////////
         break;
       case 'm':
-        if(!strcmp(optarg, "udp"))
+        if(!strcmp(optarg, "udp")){
           mode = 0;
-        else if(!strcmp(optarg, "tcp"))
+          sock_type = SOCK_DGRAM;
+        }
+        else if(!strcmp(optarg, "tcp")){
+          signal(SIGINT, handle_sigint);
           mode = 1;
+          sock_type = SOCK_STREAM;
+        }
         else{
         /////////////////////////////////////////////////////////////////////////////////
           fprintf(stderr, "ERROR: unknown mode expected [udp tcp] given %s\n", optarg);
@@ -171,17 +215,15 @@ int main(int argc, char** argv){
     server_addr.sin_port = htons(port_num);
 /////////////////////////////^^nastaveni cisla potru a IP adresy hosta^^////////////////////////////////////    
     
-    /* tiskne informace o vzdalenem soketu 
-    printf("INFO: Server socket: %s : %d \n", inet_ntoa(server_addr.sin_addr), ntohs(server_addr.sin_port));
-    */
-	if ((csocket = socket(AF_INET, SOCK_DGRAM, 0)) <= 0){
+	if ((csocket = socket(AF_INET, sock_type, 0)) <= 0){
 		fprintf(stderr, "ERROR: socket not created\n");
     exit(1);
 	}
 
 
-    if(mode)
-      printf("tcp\n");
+    if(mode){
+      send_tcp(server_addr, csocket);
+    }
     else
       send_udp(server_addr, csocket, sizeof(server_addr));
 
