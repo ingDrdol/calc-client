@@ -26,6 +26,7 @@
 #define REQ_OFFSET 2 //pocet informacnich bajtu zpravy
 #define REQ_OPCODE 0 //opcode pro request
 #define REC_OFFSET 3 //pocet informacnich bajtu odpovedi
+#define MAX_HOST_NAME_LEN 255
 
 extern int optopt, opterr, optind;
 extern char *optarg;
@@ -41,42 +42,48 @@ void send_udp(struct sockaddr_in address, int csocket, socklen_t socklen){
 
     bzero(buffer, BUFF_SIZE);
 
-    fgets(buffer + REQ_OFFSET, BUFF_SIZE - REQ_OFFSET, stdin);
+    while(fgets(buffer + REQ_OFFSET, BUFF_SIZE - REQ_OFFSET, stdin) != 0){
 
-    buffer[0] = REQ_OPCODE;
-    buffer[1] = strlen(buffer + REQ_OFFSET);
+      recv_len = socklen;
 
-    int chars = sendto(csocket, buffer, strlen(buffer), 0, (struct sockaddr *)&address, socklen);
-    if(chars < 0){
-      fprintf(stderr, "ERROR: unable to send reguest '%s'\n", buffer);
-      exit(1);
-    }
+      buffer[1] = strlen(buffer + REQ_OFFSET);
+      buffer[0] = REQ_OPCODE;
+      
+      int chars = sendto(csocket, buffer, strlen(buffer + REQ_OFFSET) + REQ_OFFSET, 0, (struct sockaddr *)&address, socklen);
+      if(chars < 0){
+        fprintf(stderr, "ERROR: unable to send reguest '%s'\n", buffer);
+        exit(1);
+      }
 
-    chars = recvfrom(csocket, buffer, strlen(buffer), 0, (struct sockaddr *)&address, &recv_len);
-    if(chars < 0){
-      fprintf(stderr, "ERROR: response not given or lost\n");
-      exit(1);
-    }
+      bzero(buffer, BUFF_SIZE);
+      chars = recvfrom(csocket, buffer, BUFF_SIZE, 0, (struct sockaddr *)&address, &recv_len);
+      if(chars < 0){
+        fprintf(stderr, "ERROR: response not given or lost\n");
+        exit(1);
+      }
 
-    if(recv_len > socklen){
-      fprintf(stderr, "Warning: response may not be whole\n");
-    }
+      if(recv_len > socklen){
+        fprintf(stderr, "Warning: response may not be whole\n");
+      }
 
-    opcode = (int)buffer[0];
-    status = (int)buffer[1];
-    recv_len = (int)buffer[2];
+      opcode = (int)buffer[0];
+      status = (int)buffer[1];
+      recv_len = (int)buffer[2];
 
-    if(opcode != 1){
-      fprintf(stderr, "ERROR: unexpected opcode '%d'\n", opcode);
-    }
-    else if(status == 0){
-      printf("OK:%s", buffer + REC_OFFSET);
-    }
-    else if(status == 1){
-      printf("ERR:%s", buffer + REC_OFFSET);
-    }
-    else{
-      fprintf(stderr, "ERROR: unexpected status\n");
+      if(opcode != 1){
+        fprintf(stderr, "ERROR: unexpected opcode '%d'\n", opcode);
+      }
+      else if(status == 0){
+        printf("OK:%s\n", buffer + REC_OFFSET);
+      }
+      else if(status == 1){
+        printf("ERR:%s\n", buffer + REC_OFFSET);
+      }
+      else{
+        fprintf(stderr, "ERROR: unexpected status\n");
+      }
+
+      bzero(buffer, BUFF_SIZE);
     }
 
 }
@@ -84,7 +91,7 @@ void send_udp(struct sockaddr_in address, int csocket, socklen_t socklen){
 
 int main(int argc, char** argv){
     int c, port_num = 0, mode = -1, csocket;
-    char *host_name = NULL;
+    char host_name[MAX_HOST_NAME_LEN];
     struct hostent *ipk_server;
     struct sockaddr_in server_addr;
 //////////////////////////////////////////
@@ -100,7 +107,6 @@ int main(int argc, char** argv){
     switch (c)
       {
       case 'h':
-        host_name = malloc(sizeof(optarg));
         strcpy(host_name, optarg);
         break;
       case 'p':
@@ -108,8 +114,6 @@ int main(int argc, char** argv){
         //////////////////////////////////////////////////////////////////////////////////////////////
         if(port_num <= WELL_KNOWN_PORTS || port_num >= MAX_PORT_NUM){
           fprintf(stderr, "ERROR: invalid port number '%d' must be within <1024, 65_353>\n", port_num);
-          if(host_name != NULL)
-            free(host_name);
           exit(1);
         }
         ////////////////////////////////^^kontrola cisla portu^^///////////////////////////////////////
@@ -122,8 +126,6 @@ int main(int argc, char** argv){
         else{
         /////////////////////////////////////////////////////////////////////////////////
           fprintf(stderr, "ERROR: unknown mode expected [udp tcp] given %s\n", optarg);
-          if(host_name != NULL)
-            free(host_name);
           exit(1);
         ////////////////////////////^^neznamy protokol^^//////////////////////////////////
         }
@@ -140,11 +142,9 @@ int main(int argc, char** argv){
         else
           fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
 
-        free(host_name);
         exit(1);
       default:
 
-        free(host_name);
         exit(1);
       }
     }
@@ -153,8 +153,6 @@ int main(int argc, char** argv){
 ///////////////////////////////////////
     if(optind < argc){
         fprintf(stderr, "Unexpected non-option arguments\n");
-        if(host_name != NULL)
-          free(host_name);
         exit(1);
     }
 ///^^kontrola necekanych argumentu^^///
@@ -178,7 +176,6 @@ int main(int argc, char** argv){
     */
 	if ((csocket = socket(AF_INET, SOCK_DGRAM, 0)) <= 0){
 		fprintf(stderr, "ERROR: socket not created\n");
-    free(host_name);
     exit(1);
 	}
 
@@ -187,7 +184,6 @@ int main(int argc, char** argv){
       printf("tcp\n");
     else
       send_udp(server_addr, csocket, sizeof(server_addr));
-    
-    free(host_name);
+
     return 0;
 }

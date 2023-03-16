@@ -3,7 +3,7 @@ CFLAGS=-std=c99 -Wall -Wextra -pedantic -lm -fcommon
 .PHONY=run clean valgrind
 
 run: ipkcpc.out
-	./ipkcpc.out -p 2023 -m udp -h localhost
+	./ipkcpc.out -p 2023 -m udp -h localhost < input
 
 valgrind: ipkcpc.out
 	valgrind ./ipkcpc.out -p 2023 -m udp -h localhost
