@@ -49,6 +49,22 @@ Nakonec program spusti jednu z funkci `send_udp()` a `send_tcp()` pro finalni zp
 
 ## Funkce
 
+##### print_help()
+
+Vytiskne pomoc pri spatnemu zadani argumentu prikazove radky.
+
+##### send_udp()
+
+Zajistuje odeslani a prijem datagramu pro binarni verzi protokolu IPKCP opakovanym volanim funkci sendto() a recvfrom() (knihovna `<sys/socket.h>`.
+
+##### handle_sigint()
+
+Spusti se pri tcp modu a pri zachyceni signalu **SIGINT** zasle serveru zpravu BYE a konci spojeni.
+
+##### send_tcp()
+
+Vyrizuje textovou komunikaci se serverem vyuzitim funkci connect() pro vytvoreni spojeni, send() a recv() pro odeslani a prijeti zprav (knihovna `<sys/socket.h>`) a close() pro uzavreni spojeni (knihovna `<unistd.h>`).
+
 ## Testovani
 
 ## Odkazy
