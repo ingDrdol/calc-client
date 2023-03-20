@@ -42,7 +42,11 @@ void print_help(){
    * TO DO
    */
 }
-
+/*********************************************************************************************************
+ * Title: Demonstration of trivial UDP communication
+ * Author: Ondrej Rysavy (rysavy@fit.vutbr.cz)
+ * Availability: https://git.fit.vutbr.cz/NESFIT/IPK-Projekty/src/branch/master/Stubs/cpp/DemoUdp/client.c
+ ********************************************************************************************************/
 void send_udp(struct sockaddr_in address, int csocket, socklen_t socklen){
     
     char buffer[BUFF_SIZE];
@@ -108,6 +112,12 @@ void send_udp(struct sockaddr_in address, int csocket, socklen_t socklen){
 
 }//end send_udp
 
+/********************************************************************
+ * Title: Example of sigint handler
+ * Author: Kadam Patel
+ * Date: 08. 02. 2018
+ * Availibility: https://www.geeksforgeeks.org/signals-c-language/
+ *******************************************************************/ 
 /////////////////////////////////////////////////////////////////////
 void handle_sigint(int sig){                                       //
     fprintf(stderr, "Caught sigint, teminating connection\n");     //
@@ -116,6 +126,11 @@ void handle_sigint(int sig){                                       //
 }                                                                  //
 /////////////////^^zpracovani signalu 2 'SIGINT'^^///////////////////
 
+/*********************************************************************************************************
+ * Title: Demonstration of trivial TCP communication
+ * Author: Ondrej Rysavy (rysavy@fit.vutbr.cz)
+ * Availability: https://git.fit.vutbr.cz/NESFIT/IPK-Projekty/src/branch/master/Stubs/cpp/DemoTcp/client.c
+ ********************************************************************************************************/
 void send_tcp(struct sockaddr_in address, int csocket){
 
     char buffer[BUFF_SIZE];
@@ -175,6 +190,12 @@ int main(int argc, char** argv){
     ////^^kontrola poctu argumentu^^//////
 
     opterr = 0;
+
+/******************************************************************************************
+ * Title: Example of getopt()
+ * Author: unknown
+ * Availability: https://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html
+ *****************************************************************************************/
     /////////////////////////////////////////////////////
     while ((c = getopt(argc, argv, "h:p:m:")) != -1){
     switch (c)
