@@ -3,7 +3,7 @@
 ## Pouziti
 
 konzole:<br>
-    >./ipkcpc -h [HOSTNAME] -p [PORT] -m [MODE]<br><br>
+> ./ipkcpc -h [HOSTNAME] -p [PORT] -m [MODE]<br><br>
 Pripoji se na server zadany HOSTNAME a port PORT a posle sadu dotazu na server s bezicim programem ipkpd a pomoci vybraneho modu pomoci protokolu IPKCP a pro zadane dotazy zakoncene kodem 'EOF' tiskne prijate odpovedi.<br>
 Pri jakekoli chybe v parametrech nebo pri behu tiskne chybovou hlasku na stderr a konci kodem 1.<br>
 <br>
