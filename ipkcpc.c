@@ -245,8 +245,8 @@ int main(int argc, char** argv){
       default:
         exit(1);
         //////////////////^^neznamy, ci nevalidni prepinac^^///////////////////
-      }
-    }
+      } // end switch
+    } //end while
   //////////////^^zpracovani argumentu^^///////////////
 
     ////////////////////////////////////
