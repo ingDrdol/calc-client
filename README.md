@@ -12,17 +12,16 @@ Pri jakekoli chybe v parametrech nebo pri behu tiskne chybovou hlasku na stderr 
 
 Protokol IPKCP:<br>
 ```
-    &emsp;UDP<br>
-    &emsp;-prijma dotazy ve forme ([+-*/] [0-9]+ [0-9]+)<br>
-    &emsp;-vysledek program tiskne formou OK:[0-9]+<br>
-    &emsp;-v pripade ze server nerozezna dotaz, nebo neni schopen vypocitat vysledek program vytiskne ERR:<errmsg><br>
-<br>
-    &emsp;TCP<br>
-    &emsp;-je potreba otevrit spojeni zpravou HELLO<br>
-    &emsp;-dale nasleduje libovolny pocet zprav SOLVE formou SOLVE ([+-*/] [0-9]+ [0-9]+)<br>
-    &emsp;-spojeni je treba ukoncit zpravou BYE<br>
-    &emsp;-v pripade ze server nerozezna zaslanou zpravu zasila zpravu BYE a ukonci spojeni, timto konci i beh programu<br>
-<br>
+    UDP
+    -prijma dotazy ve forme ([+-*/] [0-9]+ [0-9]+)
+    -vysledek program tiskne formou OK:[0-9]+
+    -v pripade ze server nerozezna dotaz, nebo neni schopen vypocitat vysledek program vytiskne ERR:<errmsg>
+
+    TCP
+    -je potreba otevrit spojeni zpravou HELLO
+    -dale nasleduje libovolny pocet zprav SOLVE formou SOLVE ([+-*/] [0-9]+ [0-9]+)
+    -spojeni je treba ukoncit zpravou BYE
+    -v pripade ze server nerozezna zaslanou zpravu zasila zpravu BYE a ukonci spojeni, timto konci i beh programu
 ```
 V pripade zachyceni signalu SIGINT program zasle zpravu BYE a spojeni timto ukonci. Tyto zpravy uz netiskne.
 ## Zakladni popis
