@@ -3,8 +3,9 @@
 ## Pouziti
 
 konzole:<br>
-> ./ipkcpc -h [HOSTNAME] -p [PORT] -m [MODE]<br><br>
-
+```
+./ipkcpc -h [HOSTNAME] -p [PORT] -m [MODE]<br><br>
+```
 Pripoji se na server zadany HOSTNAME a port PORT a posle sadu dotazu na server s bezicim programem ipkpd a pomoci vybraneho modu pomoci protokolu IPKCP a pro zadane dotazy zakoncene kodem 'EOF' tiskne prijate odpovedi.<br>
 Pri jakekoli chybe v parametrech nebo pri behu tiskne chybovou hlasku na stderr a konci kodem 1.<br>
 
@@ -15,18 +16,18 @@ Pri jakekoli chybe v parametrech nebo pri behu tiskne chybovou hlasku na stderr 
 <br>
 
 Protokol IPKCP:<br>
-```
-    UDP
-    -prijma dotazy ve forme ([+-*/] [0-9]+ [0-9]+)
-    -vysledek program tiskne formou OK:[0-9]+
-    -v pripade ze server nerozezna dotaz, nebo neni schopen vypocitat vysledek program vytiskne ERR:<errmsg>
+>
+>    UDP
+>    -prijma dotazy ve forme ([+-*/] [0-9]+ [0-9]+)
+>    -vysledek program tiskne formou OK:[0-9]+
+>    -v pripade ze server nerozezna dotaz, nebo neni schopen vypocitat vysledek program vytiskne ERR:<errmsg>
+>
+>    TCP
+>    -je potreba otevrit spojeni zpravou HELLO
+>    -dale nasleduje libovolny pocet zprav SOLVE formou SOLVE ([+-*/] [0-9]+ [0-9]+)
+>    -spojeni je treba ukoncit zpravou BYE
+>    -v pripade ze server nerozezna zaslanou zpravu zasila zpravu BYE a ukonci spojeni, timto konci i beh programu<br>
 
-    TCP
-    -je potreba otevrit spojeni zpravou HELLO
-    -dale nasleduje libovolny pocet zprav SOLVE formou SOLVE ([+-*/] [0-9]+ [0-9]+)
-    -spojeni je treba ukoncit zpravou BYE
-    -v pripade ze server nerozezna zaslanou zpravu zasila zpravu BYE a ukonci spojeni, timto konci i beh programu
-```
 V pripade zachyceni signalu SIGINT program zasle zpravu BYE a spojeni timto ukonci. Tyto zpravy uz netiskne.
 
 ## Zakladni popis
