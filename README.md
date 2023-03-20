@@ -2,10 +2,12 @@
 
 ## Pouziti
 
-konzole:<br>
+#### Konzole:
+
 ```
-./ipkcpc -h [HOSTNAME] -p [PORT] -m [MODE]<br><br>
+./ipkcpc -h [HOSTNAME] -p [PORT] -m [MODE]
 ```
+
 Pripoji se na server zadany HOSTNAME a port PORT a posle sadu dotazu na server s bezicim programem ipkpd a pomoci vybraneho modu pomoci protokolu IPKCP a pro zadane dotazy zakoncene kodem 'EOF' tiskne prijate odpovedi.<br>
 Pri jakekoli chybe v parametrech nebo pri behu tiskne chybovou hlasku na stderr a konci kodem 1.<br>
 
@@ -15,7 +17,7 @@ Pri jakekoli chybe v parametrech nebo pri behu tiskne chybovou hlasku na stderr 
     &emsp;MODE - ipkcp podporuje dva mody udp a tcp<br>
 <br>
 
-Protokol IPKCP:<br>
+#### Protokol IPKCP:
 ```
     UDP
     -prijma dotazy ve forme ([+-*/] [0-9]+ [0-9]+)
