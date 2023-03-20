@@ -2,8 +2,8 @@
 
 ## Pouziti
 
-konzole:<br><br>
-    &emsp;./ipkcpc -h [HOSTNAME] -p [PORT] -m [MODE]<br><br>
+konzole:<br>
+    >./ipkcpc -h [HOSTNAME] -p [PORT] -m [MODE]<br><br>
 Pripoji se na server zadany HOSTNAME a port PORT a posle sadu dotazu na server s bezicim programem ipkpd a pomoci vybraneho modu pomoci protokolu IPKCP a pro zadane dotazy zakoncene kodem 'EOF' tiskne prijate odpovedi.<br>
 Pri jakekoli chybe v parametrech nebo pri behu tiskne chybovou hlasku na stderr a konci kodem 1.<br>
 <br>
@@ -37,7 +37,7 @@ Po splneni  "vstupnich podminek" program vola knihovni funkci gethostbyname() (k
 
 Nasledne se nastavi komunikacni protokol na IPv4 a cislo portu. Tyto informace se ulozi do struktury **sockaddr_in**.<br>
 
-S temito daty je program schopen vytvorit soket pro odesilani a prijmani dat. K tomuto ucelu je pouzita funkce soket() (knihovna `<sys/soket.h>`) teto funkci program predava strukturu **sockaddr_in** vyse nastavenou a promennou sock_type, ktera nese typ prenosu dat. (but **SOCK_DGRAM** nebo **SOCK_STRAM** na zaklade vstupnich parametru). Pokud tato funkce vrati zapornou hodnotu, nebo nulu soket se nepodarilo vytvorit a program konci chybou 1.<br>
+S temito daty je program schopen vytvorit soket pro odesilani a prijmani dat. K tomuto ucelu je pouzita funkce soket() (knihovna `<sys/soket.h>`) teto funkci program predava strukturu **sockaddr_in** vyse nastavenou a promennou sock_type, ktera nese typ prenosu dat. (but **SOCK_DGRAM** nebo **SOCK_STREAM** na zaklade vstupnich parametru). Pokud tato funkce vrati zapornou hodnotu, nebo nulu soket se nepodarilo vytvorit a program konci chybou 1.<br>
 
 Nakonec program spusti jednu z funkci `send_udp()` a `send_tcp()` pro finalni zprostredkovani komunikace.<br>
 
