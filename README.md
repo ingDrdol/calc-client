@@ -9,7 +9,7 @@
 ```
 
 Připojí se na server zadaný HOSTNAME a port PORT a pošle sadu dotazů na server s běžícím programem ipkpd pomocí vybraného módu protokolem IPKCP a pro zadané dotazy zakončené kódem 'EOF' tiskne přijaté odpovědi.<br>
-Při jakékoliv chybě v parametrech tiskne nápovědu. Při chybě za běhu tiskne chybovou hlásku na stderr a konči kódem 1.<br>
+Při jakékoliv chybě v parametrech tiskne nápovědu. Při chybě za běhu tiskne chybovou hlášku na stderr a končí kódem 1.<br>
 
 <br>
     &emsp;HOSTNAME - musí být validní doménové jméno serveru s bežícím programem ipkpd v odpovídajícím módu MODE<br>
@@ -65,7 +65,7 @@ Spustí se při tcp módu a při zachycení signálu **SIGINT** zašle serveru z
 
 Vyřizuje textovou komunikaci se serverem vyuzitím funkce connect() pro vytvoření spojení, send() a recv() pro odeslání a přijetí zpráv (knihovna `<sys/socket.h>`) a close() pro uzavření spojení (knihovna `<unistd.h>`).
 
-## Testovani
+## Testování
 
 1. Na virtuálce ipk NixOs spusťte server ipkpd v shellu následovně:
 
@@ -93,7 +93,7 @@ Ryšavý, Ondřej, Ph. D. “IPK-DemoTcp.” *FIT - VUT Brno - Git*, git.fit.vut
 Kadam Patel. “Signals in C Language.” *GeeksforGeeks*, 8 Feb. 2018, www.geeksforgeeks.org/signals-c-language
 www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html
 
-### Poznamky pod carou
+### Poznámky pod čarou
 
 nebojte už přišel 'fix: interpunkce'
 program vrací pro věechny chyby stejnou hodnotu (1) s ohledem na výpis chybových zpráv mi přislo zbytečné definovat rozdílné návratové hodnoty
