@@ -37,10 +37,15 @@ extern char *optarg;
 int csocket; //globalni kvuli uzavreni pri SIGINT
 
 void print_help(){
-  printf("help is being printed\n");
-  /*
-   * TO DO
-   */
+  printf("usage:\n");
+  printf("\n");
+  printf("./ipkcpc -h [HOSTNAME] -p [PORT] -m [MODE]");
+  printf("\n");
+  printf("Connects to a server given by HOSTNAME via port PORT and sends requests from stdin until EOF or SIGINT is recieved (in case of tcp communication BYE command will also end connection)\n");
+  printf("\n");
+  printf("\tHOSTNAME - domain name of server with running ipkpd\n");
+  printf("\tPORT     - portnumber on witch is ipkpd reciving packets\n");
+  printf("\tMODE     - supported modes are tcp and udp\n");
 }
 /*********************************************************************************************************
  * Title: Demonstration of trivial UDP communication
@@ -119,13 +124,13 @@ void send_udp(struct sockaddr_in address, int csocket, socklen_t socklen){
  * Availibility: https://www.geeksforgeeks.org/signals-c-language/
  ********************************************************************/ 
 ///////////////////////////////////////////////////////////////////////////
-void handle_sigint(int sig){                                             //
+void handle_sigint(){                                             //
     int chars;							   	                                         //
     char buffer[BUFF_SIZE];					   	                                 //
     strcpy(buffer, "BYE\n");					   	                               //
     printf( "%s", buffer);   						                                 //
     								  	                                                 //
-    while(chars = send(csocket, buffer, strlen(buffer),0) < 0);          // 
+    while((chars = send(csocket, buffer, strlen(buffer),0)) < 0);        // 
     									                                                   //
     chars = recv(csocket, buffer, BUFF_SIZE, 0);			                   //
     buffer[chars] = '\0';						                                     //
@@ -249,9 +254,12 @@ int main(int argc, char** argv){
         else if (isprint (optopt))
           fprintf (stderr, "Unknown option `-%c'.\n", optopt);
         else
-          fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);
-        
+          fprintf (stderr, "Unknown option character `\\x%x'.\n", optopt);       
+        print_help();
+        exit(1);
+        break;
       default:
+        print_help();
         exit(1);
         //////////////////^^neznamy, ci nevalidni prepinac^^///////////////////
       } // end switch
