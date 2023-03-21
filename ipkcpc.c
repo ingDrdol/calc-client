@@ -119,20 +119,20 @@ void send_udp(struct sockaddr_in address, int csocket, socklen_t socklen){
  * Availibility: https://www.geeksforgeeks.org/signals-c-language/
  ********************************************************************/ 
 ///////////////////////////////////////////////////////////////////////////
-void handle_sigint(int sig){                                       	 //
-    int chars;							   	 //
-    char buffer[BUFF_SIZE];					   	 //
-    strcpy(buffer, "BYE\n");					   	 //
-    printf( "%s", buffer);   						 //
-    								  	 //
-    while(chars = send(csocket, buffer, strlen(buffer),0) < 0);// 
-    									 //
-    chars = recv(csocket, buffer, BUFF_SIZE, 0);			 //
-    buffer[chars] = '\0';						 //
-    printf( "%s", buffer); 				                 //
+void handle_sigint(int sig){                                             //
+    int chars;							   	                                         //
+    char buffer[BUFF_SIZE];					   	                                 //
+    strcpy(buffer, "BYE\n");					   	                               //
+    printf( "%s", buffer);   						                                 //
+    								  	                                                 //
+    while(chars = send(csocket, buffer, strlen(buffer),0) < 0);          // 
+    									                                                   //
+    chars = recv(csocket, buffer, BUFF_SIZE, 0);			                   //
+    buffer[chars] = '\0';						                                     //
+    printf( "%s", buffer); 				                                       //
     close(csocket);                                                      //
-    exit(2);                                                       	 //
-}                                                                  	 //
+    exit(2);                                                       	     //
+}                                                                  	     //
 ////////////////////^^zpracovani signalu 2 'SIGINT'^^//////////////////////
 
 /*********************************************************************************************************
