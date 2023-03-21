@@ -99,7 +99,7 @@ void send_udp(struct sockaddr_in address, int csocket, socklen_t socklen){
         printf("OK:%s\n", buffer + REC_OFFSET);
       }
       else if(status == 1){
-        printf("ERR:%s", buffer + REC_OFFSET);
+        printf("ERR:%s\n", buffer + REC_OFFSET);
       }
       //////////////////^^tisk dat validni odpovedi^^/////////////////
       else{
@@ -125,7 +125,7 @@ void handle_sigint(int sig){                                       	 //
     strcpy(buffer, "BYE\n");					   	 //
     printf( "%s", buffer);   						 //
     								  	 //
-    while(chars = send(csoket, buffer, BUFF_SIZE, strlen(buffer),0) < 0);// 
+    while(chars = send(csocket, buffer, strlen(buffer),0) < 0);// 
     									 //
     chars = recv(csocket, buffer, BUFF_SIZE, 0);			 //
     buffer[chars] = '\0';						 //

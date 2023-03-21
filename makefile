@@ -3,7 +3,7 @@ CFLAGS=-std=c99 -Wall -Wextra -pedantic -lm -fcommon
 .PHONY=runudp runtcp clean valgrind
 
 runudp: ipkcpc.out
-	./ipkcpc.out -p 2023 -m udp -h localhost < inputudp
+	./ipkcpc.out -p 2023 -m udp -h localhost < testfiles/udp.in
 
 runtcp: ipkcpc.out
 	./ipkcpc.out -p 2023 -m tcp -h localhost
