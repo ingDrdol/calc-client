@@ -67,9 +67,33 @@ Vyrizuje textovou komunikaci se serverem vyuzitim funkci connect() pro vytvoreni
 
 ## Testovani
 
-## Odkazy
+1. Na virtualce ipk NixOs spustte server ipkpd v shellu nasledovne:
+
+```
+ipkpd -h localhost -p 2023 -m udp & ipkpd -h localhost -p 2024 -m tcp &
+```
+
+2. Pustte skript
+
+```
+./test.sh
+```
+
+3. Po ukonceni testovani je treba najit procesy serverovych stran a pomoci zaslani signalu SIGKILL (9) je ukoncit
+
+```
+kill -9 idp_ipkpd_udp
+kill -9 idp_ipkpd_tcp
+```
+
+### Odkazy
+
+Rysavy, Ondrej, Ph. D. “IPK-DemoUdp.” *FIT - VUT Brno - Git*, git.fit.vutbr.cz/NESFIT/IPK-Projekty/src/branch/master/Stubs/cpp/DemoUdp/client.c.
+Rysavy, Ondrej, Ph. D. “IPK-DemoTcp.” *FIT - VUT Brno - Git*, git.fit.vutbr.cz/NESFIT/IPK-Projekty/src/branch/master/Stubs/cpp/DemoTcp/client.c.
+Kadam Patel. “Signals in C Language.” *GeeksforGeeks*, 8 Feb. 2018, www.geeksforgeeks.org/signals-c-language
+www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html
 
 ### Poznamky pod carou
 
-nebojte prijde 'fix: interpunkce'<br>
+nebojte prijde 'fix: interpunkce'
 program vraci pro vsechny chyby stejnou hodnotu (1) s ohledem na vypis chybovych zprav mi prislo zbytecne definovat rozdilne navratove hodnoty
