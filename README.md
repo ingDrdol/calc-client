@@ -96,4 +96,7 @@ www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html
 ### Poznámky pod čarou
 
 nebojte už přišel 'fix: interpunkce'
-program vrací pro věechny chyby stejnou hodnotu (1) s ohledem na výpis chybových zpráv mi přislo zbytečné definovat rozdílné návratové hodnoty
+
+program vrací pro všechny chyby stejnou hodnotu (1) s ohledem na výpis chybových zpráv mi přislo zbytečné definovat rozdílné návratové hodnoty
+
+byl bych vděčný za zpětnou vazbu k citacím
