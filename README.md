@@ -88,13 +88,10 @@ kill -9 idp_ipkpd_tcp
 
 ### Odkazy
 
-Ryšavý, Ondřej, Ph. D. “IPK-DemoUdp.” *FIT - VUT Brno - Git*, git.fit.vutbr.cz/NESFIT/IPK-Projekty/src/branch/master/Stubs/cpp/DemoUdp/client.c.
-
-Ryšavý, Ondřej, Ph. D. “IPK-DemoTcp.” *FIT - VUT Brno - Git*, git.fit.vutbr.cz/NESFIT/IPK-Projekty/src/branch/master/Stubs/cpp/DemoTcp/client.c.
-
-Kadam Patel. “Signals in C Language.” *GeeksforGeeks*, 8 Feb. 2018, www.geeksforgeeks.org/signals-c-language
-
-www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html
+Ryšavý, Ondřej, Ph. D. “IPK-DemoUdp.” *FIT - VUT Brno - Git*, git.fit.vutbr.cz/NESFIT/IPK-Projekty/src/branch/master/Stubs/cpp/DemoUdp/client.c.<br>
+Ryšavý, Ondřej, Ph. D. “IPK-DemoTcp.” *FIT - VUT Brno - Git*, git.fit.vutbr.cz/NESFIT/IPK-Projekty/src/branch/master/Stubs/cpp/DemoTcp/client.c.<br>
+Kadam Patel. “Signals in C Language.” *GeeksforGeeks*, 8 Feb. 2018, www.geeksforgeeks.org/signals-c-language<br>
+www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html<br>
 
 ### Poznámky pod čarou
 
