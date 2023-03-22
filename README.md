@@ -92,11 +92,3 @@ Ryšavý, Ondřej, Ph. D. “IPK-DemoUdp.” *FIT - VUT Brno - Git*, git.fit.vut
 Ryšavý, Ondřej, Ph. D. “IPK-DemoTcp.” *FIT - VUT Brno - Git*, git.fit.vutbr.cz/NESFIT/IPK-Projekty/src/branch/master/Stubs/cpp/DemoTcp/client.c.<br>
 Kadam Patel. “Signals in C Language.” *GeeksforGeeks*, 8 Feb. 2018, www.geeksforgeeks.org/signals-c-language<br>
 www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html<br>
-
-### Poznámky pod čarou
-
-nebojte už přišel 'fix: interpunkce'
-
-program vrací pro všechny chyby stejnou hodnotu (1) s ohledem na výpis chybových zpráv mi přislo zbytečné definovat rozdílné návratové hodnoty
-
-byl bych vděčný za zpětnou vazbu k citacím
